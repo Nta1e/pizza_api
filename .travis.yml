@@ -1,0 +1,27 @@
+language: python
+
+python:
+  - "3.7"
+
+services: postgresql
+
+env:
+  - DJANGO=2.2.6
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - psql -c "CREATE DATABASE pizza_db;" -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+script:
+  - coverage run --source=api/ ./manage.py test
+  - coverage report
+
+after_success:
+  - coveralls
+
+notifications:
+  email: false
