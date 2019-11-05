@@ -18,25 +18,25 @@ def custom_exception_handler(exc, context):
         response.data["status_code"] = response.status_code
         return response
     return Response(
-        data={"error": str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        data={"error": exc}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
 
 
 Error = namedtuple("Error", ("status_code", "message"))
 
-AUTH_01 = Error(status_code=400, message="User with this email already exists")
-AUTH_02 = Error(status_code=400, message="Invalid email")
+ORDER_1 = Error(
+    status_code=400,
+    message="You cannot order for the same pizza flavor and size more than once!",
+)
 
 
 def handle(error):
-    error_response = {
-        "Error": {"status_code": error.status_code, "message": error.message}
-    }
-    if error.status_code == 400:
+    error_response = {"Error": {"message": error.message}}
+    if int(error.status_code) == 400:
         raise ValidationError(error_response)
-    elif error.status_code == 404:
+    elif int(error.status_code) == 404:
         raise NotFound(error_response)
-    elif error.status_code == 401:
+    elif int(error.status_code) == 401:
         raise NotAuthenticated(error_response)
     else:
         raise APIException(error_response)
