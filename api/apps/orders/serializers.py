@@ -5,6 +5,7 @@ from api.apps.authentication.serializers import UserSerializer
 from api.utils import errors
 
 PIZZA_SIZES = ["Small", "Medium", "Large", "Extra-large"]
+ORDER_STATUSES = ["Pending", "In Transit", "Delivered"]
 
 
 class PlaceOrderSerializer(serializers.ModelSerializer):
@@ -27,4 +28,58 @@ class PlaceOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("flavour", "size", "quantity", "user")
+        fields = ("id", "flavour", "size", "quantity", "status", "user")
+
+
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    size = serializers.ChoiceField(PIZZA_SIZES)
+
+    def update(self, instance, validated_data):
+        if instance.status in ["Delivered", "In Transit"]:
+            errors.handle(errors.ORDER_5)
+        if instance.user != self.context["request"].user:
+            errors.handle(errors.ORDER_3)
+        return super(UpdateOrderSerializer, self).update(
+            instance, validated_data
+        )
+
+    def to_representation(self, instance):
+        representation = super(UpdateOrderSerializer, self).to_representation(
+            instance
+        )
+        data = {
+            "message": "Order successfully updated!",
+            "details": {**representation},
+        }
+        return data
+
+    class Meta:
+        model = Order
+        fields = ("id", "flavour", "size", "quantity", "status")
+
+
+class UpdateOrderStatusSerializer(serializers.ModelSerializer):
+    status = serializers.ChoiceField(ORDER_STATUSES)
+    user = UserSerializer(read_only=True)
+
+    def update(self, instance, validated_data):
+        if not self.context["request"].user.is_superuser:
+            errors.handle(errors.ORDER_4)
+        return super(UpdateOrderStatusSerializer, self).update(
+            instance, validated_data
+        )
+
+    def to_representation(self, instance):
+        representation = super(
+            UpdateOrderStatusSerializer, self
+        ).to_representation(instance)
+        data = {
+            "message": "Order status successfully updated!",
+            "order": {**representation},
+        }
+        return data
+
+    class Meta:
+        model = Order
+        fields = ("id", "flavour", "size", "quantity", "status", "user")
+        read_only_fields = ("flavour", "size", "quantity")
