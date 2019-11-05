@@ -8,6 +8,7 @@ from rest_framework.exceptions import (
     NotFound,
     NotAuthenticated,
     APIException,
+    PermissionDenied,
 )
 from rest_framework.views import exception_handler
 
@@ -28,6 +29,21 @@ ORDER_1 = Error(
     status_code=400,
     message="You cannot order for the same pizza flavor and size more than once!",
 )
+ORDER_2 = Error(
+    status_code=404, message="There doesn't exist an order with this id!"
+)
+ORDER_3 = Error(
+    status_code=400,
+    message="You cannot update an order that you didn't place!",
+)
+ORDER_4 = Error(
+    status_code=403,
+    message="This functionality is restricted to only a super user",
+)
+
+ORDER_5 = Error(
+    status_code=400, message="Cannot edit an order that is already dispatched!"
+)
 
 
 def handle(error):
@@ -38,5 +54,7 @@ def handle(error):
         raise NotFound(error_response)
     elif int(error.status_code) == 401:
         raise NotAuthenticated(error_response)
+    elif int(error.status_code) == 403:
+        raise PermissionDenied(error_response)
     else:
         raise APIException(error_response)
