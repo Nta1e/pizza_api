@@ -71,3 +71,18 @@ class OrdersTestCase(BaseTestCase):
             {"status": "Delivered"},
         )
         self.assertEqual(response.status_code, 403)
+
+    def test_successful_order_deletion(self):
+        response = self.authorized_client().delete(
+            reverse(
+                "delete_order", kwargs={"order_id": self.create_order().id}
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("successfully deleted!", response.data["message"])
+
+    def test_unsuccessful_order_deletion(self):
+        response = self.authorized_client().delete(
+            reverse("delete_order", kwargs={"order_id": 3})
+        )
+        self.assertEqual(response.status_code, 404)

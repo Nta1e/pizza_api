@@ -40,9 +40,11 @@ ORDER_4 = Error(
     status_code=403,
     message="This functionality is restricted to only a super user",
 )
-
 ORDER_5 = Error(
     status_code=400, message="Cannot edit an order that is already dispatched!"
+)
+ORDER_6 = Error(
+    status_code=400, message="You cannot delete an order you didn't place"
 )
 
 
