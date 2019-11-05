@@ -23,9 +23,20 @@ class BaseTestCase(APITestCase):
             "email": "shadikntale@gmail.com",
             "password": "password",
         }
+        self.order_data = {"flavour": "Meat", "size": "Small", "quantity": 2}
 
     def register_user(self):
         response = self.client.post(
             reverse("create_user"), self.user_data, format="json"
         )
         return response
+
+    def authorized_client(self):
+        self.client.post(reverse("create_user"), self.user_data, format="json")
+        response = self.client.post(
+            reverse("login_user"), self.login_data, format="json"
+        )
+        access_token = response.data["access_token"]
+        client = self.client
+        client.credentials(HTTP_AUTHORIZATION=access_token)
+        return client

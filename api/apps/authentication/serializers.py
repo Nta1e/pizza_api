@@ -20,3 +20,16 @@ class CreateUserSerializer(serializers.ModelSerializer):
             "address_line_2",
             "password",
         )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "address_line_1",
+            "address_line_2",
+        )

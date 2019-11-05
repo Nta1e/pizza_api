@@ -8,7 +8,7 @@ def custom_jwt_response_payload_handler(token, user=None, request=None):
     data = jwt_response_payload_handler(token, user, request)
     response_data = {
         "user": CreateUserSerializer(instance=user).data,
-        "access_token": data["token"],
+        "access_token": "Bearer " + data["token"],
         "expires_in": "24hrs",
     }
     return response_data
