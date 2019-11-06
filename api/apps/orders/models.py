@@ -26,3 +26,6 @@ class Order(models.Model):
         max_length=50, choices=ORDER_STATUSES, default="Pending"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.flavour

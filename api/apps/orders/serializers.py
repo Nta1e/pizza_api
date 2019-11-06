@@ -83,3 +83,11 @@ class UpdateOrderStatusSerializer(serializers.ModelSerializer):
         model = Order
         fields = ("id", "flavour", "size", "quantity", "status", "user")
         read_only_fields = ("flavour", "size", "quantity")
+
+
+class OrdersSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ("id", "flavour", "size", "quantity", "status", "user")
