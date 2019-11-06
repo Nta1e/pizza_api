@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  database:
+    restart: always
+    image: postgres:10.1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pizza-backend
+      - POSTGRES_DB=pizza_db
+    volumes:
+      - ../postgres_data:/var/lib/postgresql/data
+    ports:
+      - '8092:5432'
+    expose:
+      - '5432'
+    container_name: pizza_app_database
+  app:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"
+    container_name: pizza_api

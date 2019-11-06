@@ -14,12 +14,19 @@ from rest_framework.views import exception_handler
 
 
 def custom_exception_handler(exc, context):
+    """
+    Add status_code to the returned exception response
+
+    :param exc:
+    :param context:
+    :return: Response
+    """
     response = exception_handler(exc, context)
     if response:
         response.data["status_code"] = response.status_code
         return response
     return Response(
-        data={"error": exc}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        data={"error": str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
 
 
@@ -52,6 +59,11 @@ ORDER_7 = Error(
 
 
 def handle(error):
+    """
+    Handle specific error responses
+    :param error:
+    :return: Exception
+    """
     error_response = {"Error": {"message": error.message}}
     if int(error.status_code) == 400:
         raise ValidationError(error_response)
