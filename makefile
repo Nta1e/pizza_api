@@ -4,7 +4,7 @@ DOCKER_COMPOSE_FILE=./docker/docker-compose.yml
 build:
 	${INFO} "Building the required docker images"
 	@ docker-compose -f $(DOCKER_COMPOSE_FILE) build
-	${INFO} "Build Completed successfully"
+	${SUCCESS} "Build Completed successfully"
 	@ echo " "
 
 # Start all the containers
@@ -18,7 +18,7 @@ stop:
 	${INFO} "Stopping docker containers"
 	@ echo " "
 	@ docker-compose -f $(DOCKER_COMPOSE_FILE) down -v
-	@ echo "All containers stopped successfully"
+	${SUCCESS} "All containers stopped successfully"
 
 #colors
 GREEN 	:= $(shell tput -Txterm setaf 2)
