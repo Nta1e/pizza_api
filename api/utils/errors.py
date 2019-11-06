@@ -46,6 +46,9 @@ ORDER_5 = Error(
 ORDER_6 = Error(
     status_code=400, message="You cannot delete an order you didn't place"
 )
+ORDER_7 = Error(
+    status_code=400, message="You cannot view an order you didn't place"
+)
 
 
 def handle(error):

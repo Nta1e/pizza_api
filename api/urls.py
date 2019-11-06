@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from api.apps.orders.views import get_swagger_view
+
+schema_view = get_swagger_view(title="Pizza app API")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.apps.authentication.urls")),
     path("api/", include("api.apps.orders.urls")),
+    path("docs/", schema_view),
 ]

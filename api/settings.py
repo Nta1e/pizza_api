@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "api.apps.authentication",
     "api.apps.orders",
     "rest_framework",
+    "rest_framework_swagger",
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ],
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
 
 JWT_AUTH = {
@@ -147,5 +149,17 @@ JWT_AUTH = {
     "JWT_EXPIRATION_DELTA": timedelta(hours=24),
 }
 
-
 AUTH_USER_MODEL = "authentication.User"
+
+SWAGGER_SETTINGS = {
+    "api_version": "1.0",
+    "info": {
+        "description": "This is the official API documentation for the pizza ordering app",
+        "title": "Pizza API documentation",
+    },
+    "SHOW_REQUEST_HEADERS": True,
+    "USE_SESSION_AUTH": False,
+    "SECURITY_DEFINITIONS": {
+        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
+}
