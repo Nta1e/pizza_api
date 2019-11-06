@@ -12,3 +12,5 @@ env/
 
 # Pycharm
 .idea/
+
+postgres_data/
