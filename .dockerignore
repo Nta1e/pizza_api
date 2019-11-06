@@ -1,0 +1,8 @@
+.env
+.coverage
+.gitignore
+.flake8
+.pre-commit-config.yaml
+.travis.yml
+LICENSE
+env/

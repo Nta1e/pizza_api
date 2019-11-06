@@ -87,8 +87,9 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DB_NAME", "pizza_db"),
         "USER": os.getenv("DB_USER", "postgres"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "password"),
-        "port": os.getenv("DB_PORT", "5432"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "pizza-backend"),
+        "PORT": os.getenv("DB_PORT", "5432"),
+        "HOST": os.getenv("DB_HOST", "database"),
     }
 }
 
@@ -160,6 +161,11 @@ SWAGGER_SETTINGS = {
     "SHOW_REQUEST_HEADERS": True,
     "USE_SESSION_AUTH": False,
     "SECURITY_DEFINITIONS": {
-        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+        "api_key": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "scheme": "bearer",
+        }
     },
 }
