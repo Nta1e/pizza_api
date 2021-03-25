@@ -27,7 +27,7 @@ psycopg2-binary==2.8.4
 PyJWT==1.7.1
 python-dotenv==0.10.3
 pytz==2019.3
-PyYAML==5.1.2
+PyYAML==5.4
 requests==2.22.0
 simplejson==3.16.0
 six==1.12.0
